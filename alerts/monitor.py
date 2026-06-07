@@ -1,7 +1,10 @@
 import time
 import logging
+import pytz
 import yfinance as yf
 from datetime import datetime
+
+IST = pytz.timezone("Asia/Kolkata")
 from data.nse_data import get_nifty_option_chain, parse_option_chain, get_pcr
 from data.stock_scanner import _fetch_history, compute_volume_spike
 from data.forex_data import get_usdinr
@@ -23,11 +26,11 @@ _last_news_check = None
 
 
 def _is_market_open() -> bool:
-    now = datetime.now()
+    now = datetime.now(IST)
     if now.weekday() >= 5:
         return False
-    market_open = now.replace(hour=9, minute=15, second=0)
-    market_close = now.replace(hour=15, minute=30, second=0)
+    market_open = now.replace(hour=9, minute=15, second=0, microsecond=0)
+    market_close = now.replace(hour=15, minute=30, second=0, microsecond=0)
     return market_open <= now <= market_close
 
 
@@ -90,7 +93,7 @@ def check_volume_spikes():
 def check_news_alerts():
     global _last_news_check
     try:
-        now = datetime.now()
+        now = datetime.now(IST)
         if _last_news_check and (now - _last_news_check).seconds < 1800:
             return  # only check news every 30 mins
         _last_news_check = now
