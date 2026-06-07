@@ -1,0 +1,25 @@
+# Never commit secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Reports output (generated at runtime)
+reports/
+*.pdf
+
+# Logs
+*.log
+fo_intelligence.log
+
+# OS
+.DS_Store
+Thumbs.db
